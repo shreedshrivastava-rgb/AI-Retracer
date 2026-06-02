@@ -1,0 +1,332 @@
+.demoSection {
+  padding: 6rem 0;
+  position: relative;
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem auto;
+}
+
+.tagline {
+  color: var(--color-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* Selector Tabs */
+.bugSelector {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.bugTab {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bugTab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+}
+
+.bugTabActive {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: var(--color-primary);
+  color: var(--text-primary);
+  box-shadow: var(--glow-primary);
+}
+
+/* Playground Board */
+.board {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  border-radius: 20px;
+  padding: 1.5rem;
+  min-height: 520px;
+  align-items: stretch;
+}
+
+/* Left Side: Code Editor Terminal */
+.editorCard {
+  background: #06060c;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.editorHeader {
+  height: 2.75rem;
+  background: #0a0a14;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  justify-content: space-between;
+}
+
+.editorFilename {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.editorBody {
+  padding: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #a5b4fc;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.codeLine {
+  display: flex;
+  position: relative;
+  padding: 0.1rem 0.5rem 0.1rem 2.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.codeLineNumber {
+  position: absolute;
+  left: 0.5rem;
+  color: var(--text-muted);
+  user-select: none;
+  font-size: 0.8rem;
+}
+
+.lineHighlighted {
+  background: rgba(139, 92, 246, 0.15);
+  color: #fff;
+  border-left: 3px solid var(--color-primary);
+}
+
+.lineError {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  border-left: 3px solid #ef4444;
+}
+
+/* Right Side: Telemetry Flow & Diagnostics */
+.telemetryCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.controlPanel {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controlHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controlTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+}
+
+.stepIndicator {
+  font-size: 0.8rem;
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.actionBtn {
+  background: var(--color-primary);
+  border: none;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.actionBtn:hover {
+  background: #7c3aed;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.actionBtnDisabled {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.flowTrack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flowStep {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  opacity: 0.3;
+}
+
+.flowStepActive {
+  opacity: 1;
+  border-color: var(--color-secondary);
+  background: rgba(6, 182, 212, 0.04);
+}
+
+.flowStepError {
+  opacity: 1;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.flowStepIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.iconPending {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+}
+
+.iconRun {
+  background: rgba(6, 182, 212, 0.2);
+  color: var(--color-secondary);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+}
+
+.iconFail {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+}
+
+.flowDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.flowName {
+  font-weight: 600;
+}
+
+.flowDesc {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.aiDiagnosticBox {
+  background: rgba(245, 158, 11, 0.03);
+  border: 1px dashed rgba(245, 158, 11, 0.35);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  transition: all 0.5s ease;
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+.aiDiagnosticBoxVisible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.aiDemoIcon {
+  font-size: 1.5rem;
+}
+
+.aiReport {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.aiReportTitle {
+  font-weight: 700;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aiReportDesc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.aiReportDesc code {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  color: #a78bfa;
+}
+
+@media (max-width: 900px) {
+  .board {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
