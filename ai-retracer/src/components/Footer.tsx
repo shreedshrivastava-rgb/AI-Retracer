@@ -67,7 +67,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className={`${styles.bottomBar} container`}>
         <span>
-          © {new Date().getFullYear()} AI Retracer Inc. All rights reserved.
+          © {new Date().getFullYear()} Glide Inc. All rights reserved.
         </span>
         <div className={styles.socials}>
           <a href="https://github.com/shreedshrivastava-rgb" target="_blank" rel="noreferrer">
