@@ -12,21 +12,22 @@ import { motion, AnimatePresence } from "framer-motion";
  */
 const customCSS = `
   .prompt-container {
-    background-color: #1F2023;
-    border: 1px solid #444444;
+    background-color: #fcfcfc;
+    border: 1px solid #e5e7eb;
     border-radius: 24px;
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.24);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
     width: 100%;
-    color: #ffffff;
+    color: #111827;
   }
 
   .prompt-container:focus-within {
-    border-color: #666666;
+    border-color: #d1d5db;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
   }
 
   .prompt-textarea {
@@ -34,7 +35,7 @@ const customCSS = `
     background: transparent;
     border: none;
     outline: none;
-    color: #f3f4f6;
+    color: #111827;
     font-size: 16px;
     resize: none;
     padding: 4px 0;
@@ -62,7 +63,7 @@ const customCSS = `
   .prompt-icon-btn {
     background: transparent;
     border: none;
-    color: #9ca3af;
+    color: #6b7280;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -73,8 +74,8 @@ const customCSS = `
   }
 
   .prompt-icon-btn:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #d1d5db;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #374151;
   }
 
   .prompt-toggle-btn {
@@ -88,38 +89,38 @@ const customCSS = `
     transition: all 0.2s;
     border: 1px solid transparent;
     background: transparent;
-    color: #9ca3af;
+    color: #6b7280;
     cursor: pointer;
   }
 
   .prompt-toggle-btn.active-search {
-    background-color: rgba(30, 174, 219, 0.15);
-    border-color: #1EAEDB;
+    background-color: rgba(30, 174, 219, 0.1);
+    border-color: rgba(30, 174, 219, 0.3);
     color: #1EAEDB;
   }
 
   .prompt-toggle-btn.active-think {
-    background-color: rgba(139, 92, 246, 0.15);
-    border-color: #8B5CF6;
+    background-color: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.3);
     color: #8B5CF6;
   }
 
   .prompt-toggle-btn.active-canvas {
-    background-color: rgba(249, 115, 22, 0.15);
-    border-color: #F97316;
+    background-color: rgba(249, 115, 22, 0.1);
+    border-color: rgba(249, 115, 22, 0.3);
     color: #F97316;
   }
 
   .prompt-divider {
     width: 1px;
     height: 16px;
-    background-color: #444444;
+    background-color: #e5e7eb;
     margin: 0 4px;
   }
 
   .prompt-submit-btn {
-    background-color: #ffffff;
-    color: #1F2023;
+    background-color: #000000;
+    color: #ffffff;
     border: none;
     border-radius: 9999px;
     width: 32px;
@@ -132,14 +133,14 @@ const customCSS = `
   }
 
   .prompt-submit-btn:hover {
-    background-color: #e5e7eb;
+    background-color: #374151;
     transform: scale(1.05);
   }
 
   .prompt-submit-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
-    background-color: #374151;
+    background-color: #e5e7eb;
     color: #9ca3af;
   }
 
@@ -156,12 +157,13 @@ const customCSS = `
 // Inject styles into document only on client side
 if (typeof document !== "undefined") {
   const styleId = "prompt-box-styles";
-  if (!document.getElementById(styleId)) {
-    const styleSheet = document.createElement("style");
+  let styleSheet = document.getElementById(styleId) as HTMLStyleElement;
+  if (!styleSheet) {
+    styleSheet = document.createElement("style");
     styleSheet.id = styleId;
-    styleSheet.innerText = customCSS;
     document.head.appendChild(styleSheet);
   }
+  styleSheet.innerText = customCSS;
 }
 
 // Tooltip Components
@@ -287,9 +289,9 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
         {files.length > 0 && (
           <div style={{ display: "flex", gap: "8px", marginBottom: "4px" }}>
             {files.map((f, i) => (
-              <div key={i} style={{ position: "relative", backgroundColor: "#333", padding: "4px 8px", borderRadius: "8px", fontSize: "12px" }}>
+              <div key={i} style={{ position: "relative", backgroundColor: "#f3f4f6", padding: "4px 8px", borderRadius: "8px", fontSize: "12px", color: "#374151", border: "1px solid #e5e7eb" }}>
                 {f.name}
-                <button onClick={() => setFiles([])} style={{ background: "none", border: "none", color: "white", marginLeft: "4px", cursor: "pointer" }}>×</button>
+                <button onClick={() => setFiles([])} style={{ background: "none", border: "none", color: "#6b7280", marginLeft: "4px", cursor: "pointer" }}>×</button>
               </div>
             ))}
           </div>
@@ -359,7 +361,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
               disabled={!hasContent || isLoading}
             >
               {isLoading ? (
-                <div style={{ width: "16px", height: "16px", border: "2px solid #333", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+                <div style={{ width: "16px", height: "16px", border: "2px solid #e5e7eb", borderTopColor: "#000", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
               ) : hasContent ? (
                 <ArrowUp size={18} />
               ) : (
