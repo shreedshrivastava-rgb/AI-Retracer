@@ -12,6 +12,7 @@ import DashboardTransactions from "./DashboardTransactions";
 import DashboardPaymentLinks from "./DashboardPaymentLinks";
 import DashboardSettlements from "./DashboardSettlements";
 import DashboardSettings from "./DashboardSettings";
+import GlidePanel from "./GlidePanel";
 
 // Type definitions
 export interface Transaction {
@@ -44,6 +45,7 @@ export interface Settlement {
 
 export default function DashboardContainer() {
   const [liveMode, setLiveMode] = useState<boolean>(false);
+  const [glideOpen, setGlideOpen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("overview");
   const [apiKey, setApiKey] = useState<string | null>(null);
 
@@ -257,43 +259,50 @@ export default function DashboardContainer() {
   };
 
   return (
-    <div className={styles.dashboardLayout}>
-      {/* Liquid background blobs */}
-      <div className="liquid-bg">
-        <div className="blob blob-1"></div>
-        <div className="blob blob-2"></div>
-        <div className="blob blob-3"></div>
-        <div className="blob blob-4"></div>
+    <>
+      <div className={styles.dashboardLayout}>
+        {/* Liquid background blobs */}
+        <div className="liquid-bg">
+          <div className="blob blob-1"></div>
+          <div className="blob blob-2"></div>
+          <div className="blob blob-3"></div>
+          <div className="blob blob-4"></div>
+        </div>
+
+        {/* Sidebar Navigation */}
+        <DashboardSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+
+        {/* Main Workspace Area */}
+        <div className={styles.mainWrapper}>
+          <DashboardHeader
+            liveMode={liveMode}
+            setLiveMode={setLiveMode}
+            activeTab={activeTab}
+            glideOpen={glideOpen}
+            setGlideOpen={setGlideOpen}
+          />
+
+          <main className={styles.contentContainer}>
+            <div className={styles.contentInner}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  className={styles.pageTransitionWrapper}
+                >
+                  {renderPanel()}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </main>
+        </div>
       </div>
 
-      {/* Sidebar Navigation */}
-      <DashboardSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      {/* Main Workspace Area */}
-      <div className={styles.mainWrapper}>
-        <DashboardHeader
-          liveMode={liveMode}
-          setLiveMode={setLiveMode}
-          activeTab={activeTab}
-        />
-
-        <main className={styles.contentContainer}>
-          <div className={styles.contentInner}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                className={styles.pageTransitionWrapper}
-              >
-                {renderPanel()}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </main>
-      </div>
-    </div>
+      {/* Glide AI chat panel — portal sibling */}
+      <GlidePanel isOpen={glideOpen} onClose={() => setGlideOpen(false)} />
+    </>
   );
 }
