@@ -245,12 +245,18 @@ DialogTitle.displayName = DialogPrimitive.Title.displayName;
 // Main PromptInputBox Component
 interface PromptInputBoxProps {
   onSend?: (message: string, files?: File[]) => void;
+  onIntentDetected?: (intent: string, route: string) => void;
   isLoading?: boolean;
   placeholder?: string;
 }
 
 export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref: React.Ref<HTMLDivElement>) => {
-  const { onSend = () => {}, isLoading = false, placeholder = "Type your message here..." } = props;
+  const { 
+    onSend = () => {}, 
+    onIntentDetected = () => {},
+    isLoading = false, 
+    placeholder = "Type your message here..." 
+  } = props;
   const [input, setInput] = React.useState("");
   const [files, setFiles] = React.useState<File[]>([]);
   const [showSearch, setShowSearch] = React.useState(false);
@@ -269,19 +275,49 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
     }
   }, [input]);
 
+  // Simple Intent Classifier
+  const classifyIntent = (text: string) => {
+    const lower = text.toLowerCase();
+    if (lower.includes("payment") || lower.includes("transaction") || lower.includes("ledger")) {
+      onIntentDetected("REDIRECT", "/payments");
+    } else if (lower.includes("settlement") || lower.includes("payout") || lower.includes("bank")) {
+      onIntentDetected("REDIRECT", "/settlements");
+    } else if (lower.includes("api") || lower.includes("developer") || lower.includes("webhook") || lower.includes("key")) {
+      onIntentDetected("REDIRECT", "/developer-api");
+    } else if (lower.includes("link") || lower.includes("request money")) {
+      onIntentDetected("REDIRECT", "/payment-links");
+    } else if (lower.includes("home") || lower.includes("dashboard") || lower.includes("overview")) {
+      onIntentDetected("REDIRECT", "/dashboard");
+    }
+  };
+
   // Initialize Speech Recognition
   React.useEffect(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (SpeechRecognition) {
       recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = "en-US";
 
       recognitionRef.current.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setInput((prev) => (prev ? `${prev} ${transcript}` : transcript));
-        setIsListening(false);
+        let interimTranscript = "";
+        let finalTranscript = "";
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
+        }
+
+        const currentText = finalTranscript || interimTranscript;
+        if (currentText) {
+          setInput(currentText);
+          // Proactive Intent Classification
+          classifyIntent(currentText);
+        }
       };
 
       recognitionRef.current.onerror = (event: any) => {
@@ -290,7 +326,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
       };
 
       recognitionRef.current.onend = () => {
-        setIsListening(false);
+        // Continuous listening handled by handleVoiceInput
       };
     }
   }, []);

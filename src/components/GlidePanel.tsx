@@ -40,6 +40,7 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
   const [isTyping, setIsTyping] = useState(false);
   const [showTip, setShowTip] = useState(true);
   const [panelWidth, setPanelWidth] = useState(420);
+  const [lastRedirect, setLastRedirect] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const resizeRef = useRef<{ startX: number; startWidth: number } | null>(null);
 
@@ -49,6 +50,31 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
   }, [messages, isTyping]);
 
   const getTime = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  // Proactive Intent Handler
+  const handleIntentDetected = (action: string, route: string) => {
+    if (action === "REDIRECT" && route !== lastRedirect) {
+      setLastRedirect(route);
+      console.log(`[Glide Co-Pilot] Proactive Navigation Triggered: ${route}`);
+      
+      // Visual feedback in chat
+      const navMsg: Message = {
+        id: `nav-${Date.now()}`,
+        role: "ai",
+        text: `🚀 Proactively opening ${route.replace("/", "") || "dashboard"}...`,
+        time: getTime(),
+      };
+      
+      // Only add if not already the last message to avoid spamming
+      setMessages((prev) => {
+        if (prev[prev.length - 1]?.text === navMsg.text) return prev;
+        return [...prev, navMsg];
+      });
+
+      // Here you would trigger actual frontend routing, e.g.:
+      // router.push(route);
+    }
+  };
 
   const handleSend = async (text: string, files?: File[]) => {
     const trimmed = text.trim();
@@ -75,35 +101,41 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
       let aiResponseJson;
       const lowerText = trimmed.toLowerCase();
       
-      if (lowerText.includes("settlement") || lowerText.includes("payout")) {
+      if (lowerText.includes("count") && lowerText.includes("payment")) {
+        aiResponseJson = {
+          action: "REDIRECT",
+          route: "/payments",
+          spoken_response: "You've had 5 successful payments so far, up 8.3% from last week! I'm taking you to the transactions ledger now so you can see the details. Is there anything else I can help you with?",
+        };
+      } else if (lowerText.includes("settlement") || lowerText.includes("payout")) {
         aiResponseJson = {
           action: "TALK",
           route: null,
-          spoken_response: "Your last settlement of ₹16,750 was credited to HDFC Bank (XX4321). You have ₹2,50,000 pending for tomorrow's payout.",
+          spoken_response: "Your last settlement of ₹16,750 was credited to HDFC Bank (XX4321). You have ₹2,50,000 pending for tomorrow's payout. Would you like to see your full settlement history?",
         };
       } else if (lowerText.includes("volume") || lowerText.includes("business") || lowerText.includes("status")) {
         aiResponseJson = {
           action: "TALK",
           route: null,
-          spoken_response: "Business is looking great! Your total processing volume is ₹1,70,000, which is a 14.2% increase over last week.",
+          spoken_response: "Business is looking great! Your total processing volume is ₹1,70,000, which is a 14.2% increase over last week. Shall I help you create a new payment link to keep the momentum going?",
         };
       } else if (lowerText.includes("payment") || lowerText.includes("transaction")) {
         aiResponseJson = {
           action: "REDIRECT",
           route: "/payments",
-          spoken_response: "Sure, let's take a look at your transactions. Redirecting you to the payments ledger now.",
+          spoken_response: "Sure, let's take a look at your transactions. I'm redirecting you to the payments ledger now. Can I help with anything else while we're there?",
         };
       } else if (lowerText.includes("api") || lowerText.includes("webhook") || lowerText.includes("key")) {
         aiResponseJson = {
           action: "REDIRECT",
           route: "/developer-api",
-          spoken_response: "Opening your developer tools. You can manage your API keys and webhooks here.",
+          spoken_response: "Opening your developer tools. You can manage your API keys and webhooks here. Do you need help setting up a new webhook?",
         };
       } else {
         aiResponseJson = {
           action: "TALK",
           route: null,
-          spoken_response: "I'm Glide Co-Pilot. I can help you with your settlements, track payments, or navigate the dashboard. What can I do for you?",
+          spoken_response: "I'm Glide Co-Pilot. I can help you with your settlements, track payments, or navigate the dashboard. What can I do for you today?",
         };
       }
 
@@ -299,6 +331,7 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
             <div className={styles.inputArea}>
               <PromptInputBox 
                 onSend={handleSend} 
+                onIntentDetected={handleIntentDetected}
                 isLoading={isTyping}
                 placeholder="Ask Glide anything..."
               />
