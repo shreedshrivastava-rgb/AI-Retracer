@@ -175,7 +175,7 @@ const TooltipContent = React.forwardRef<
   <TooltipPrimitive.Content
     ref={ref}
     sideOffset={sideOffset}
-    className="z-50 overflow-hidden rounded-md border border-[#333333] bg-[#1F2023] px-3 py-1.5 text-sm text-white shadow-md animate-in fade-in-0 zoom-in-95"
+    className="z-50 overflow-hidden rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-900 shadow-md animate-in fade-in-0 zoom-in-95"
     {...props}
   />
 ));
@@ -190,7 +190,7 @@ const DialogOverlay = React.forwardRef<
 >(({ ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+    className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
     {...props}
   />
 ));
@@ -204,12 +204,12 @@ const DialogContent = React.forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-[90vw] md:max-w-[800px] translate-x-[-50%] translate-y-[-50%] gap-4 border border-[#333333] bg-[#1F2023] p-0 shadow-xl rounded-2xl"
+      className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-[90vw] md:max-w-[800px] translate-x-[-50%] translate-y-[-50%] gap-4 border border-gray-200 bg-white p-0 shadow-xl rounded-2xl"
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 z-10 rounded-full bg-[#2E3033]/80 p-2 hover:bg-[#2E3033] transition-all">
-        <X className="h-5 w-5 text-gray-200 hover:text-white" />
+      <DialogPrimitive.Close className="absolute right-4 top-4 z-10 rounded-full bg-gray-100/80 p-2 hover:bg-gray-200 transition-all">
+        <X className="h-5 w-5 text-gray-600 hover:text-gray-900" />
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
@@ -222,7 +222,7 @@ const DialogTitle = React.forwardRef<
 >(({ ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className="text-lg font-semibold leading-none tracking-tight text-gray-100"
+    className="text-lg font-semibold leading-none tracking-tight text-gray-900"
     {...props}
   />
 ));
