@@ -208,6 +208,21 @@ export default function DashboardContainer() {
     setWebhookLogs(prev => [log, ...prev].slice(0, 10)); // Keep last 10
   };
 
+  // Map AI-suggested routes to dashboard tabs
+  const handleNavigation = (route: string) => {
+    const routeToTab: Record<string, string> = {
+      "/dashboard": "overview",
+      "/payments": "transactions",
+      "/payment-links": "payment_links",
+      "/settlements": "settlements",
+      "/developer-api": "settings",
+    };
+    const tab = routeToTab[route];
+    if (tab) {
+      setActiveTab(tab);
+    }
+  };
+
   // Helper to render the active panel
   const renderPanel = () => {
     switch (activeTab) {
@@ -302,7 +317,7 @@ export default function DashboardContainer() {
       </div>
 
       {/* Glide AI chat panel — portal sibling */}
-      <GlidePanel isOpen={glideOpen} onClose={() => setGlideOpen(false)} />
+      <GlidePanel isOpen={glideOpen} onClose={() => setGlideOpen(false)} onNavigate={handleNavigation} />
     </>
   );
 }

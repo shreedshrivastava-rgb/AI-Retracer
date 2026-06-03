@@ -33,9 +33,10 @@ const AI_RESPONSES: string[] = [
 interface GlidePanelProps {
   isOpen: boolean;
   onClose: () => void;
+  onNavigate?: (route: string) => void;
 }
 
-export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
+export default function GlidePanel({ isOpen, onClose, onNavigate }: GlidePanelProps) {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [isTyping, setIsTyping] = useState(false);
   const [showTip, setShowTip] = useState(true);
@@ -55,8 +56,7 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
   const handleIntentDetected = (action: string, route: string) => {
     if (action === "REDIRECT" && route !== lastRedirect) {
       setLastRedirect(route);
-      console.log(`[Glide Co-Pilot] Proactive Navigation Triggered: ${route}`);
-      
+
       // Visual feedback in chat
       const navMsg: Message = {
         id: `nav-${Date.now()}`,
@@ -64,15 +64,13 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
         text: `🚀 Proactively opening ${route.replace("/", "") || "dashboard"}...`,
         time: getTime(),
       };
-      
-      // Only add if not already the last message to avoid spamming
+
       setMessages((prev) => {
         if (prev[prev.length - 1]?.text === navMsg.text) return prev;
         return [...prev, navMsg];
       });
 
-      // Here you would trigger actual frontend routing, e.g.:
-      // router.push(route);
+      onNavigate?.(route);
     }
   };
 
@@ -141,9 +139,7 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
 
       // 1. Handle Navigation if action is REDIRECT
       if (aiResponseJson.action === "REDIRECT" && aiResponseJson.route) {
-        console.log(`[Glide Co-Pilot] Redirecting to: ${aiResponseJson.route}`);
-        // Here you would trigger actual frontend routing, e.g.:
-        // router.push(aiResponseJson.route);
+        onNavigate?.(aiResponseJson.route);
       }
 
       // 2. Add spoken response to chat
