@@ -144,9 +144,21 @@ const customCSS = `
     color: #9ca3af;
   }
 
-  .prompt-recording-btn {
-    background: transparent;
-    color: #ef4444;
+  .prompt-container.listening {
+    border-color: #ef4444;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+    animation: pulse-red 2s infinite;
+  }
+
+  @keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+  }
+
+  .prompt-submit-btn.prompt-recording-btn {
+    background-color: #ef4444;
+    color: #ffffff;
   }
 
   .hidden-file-input {
@@ -244,8 +256,10 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
   const [showSearch, setShowSearch] = React.useState(false);
   const [showThink, setShowThink] = React.useState(false);
   const [showCanvas, setShowCanvas] = React.useState(false);
+  const [isListening, setIsListening] = React.useState(false);
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = React.useRef<any>(null);
 
   // Auto-resize textarea
   React.useEffect(() => {
@@ -254,6 +268,46 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 240)}px`;
     }
   }, [input]);
+
+  // Initialize Speech Recognition
+  React.useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = "en-US";
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput((prev) => (prev ? `${prev} ${transcript}` : transcript));
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error("Speech recognition error", event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const handleVoiceInput = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    } else {
+      if (recognitionRef.current) {
+        setIsListening(true);
+        recognitionRef.current.start();
+      } else {
+        alert("Speech recognition is not supported in your browser.");
+      }
+    }
+  };
 
   const handleToggleChange = (type: string) => {
     if (type === "search") {
@@ -266,6 +320,12 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
   };
 
   const handleSubmit = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
     if (input.trim() || files.length > 0) {
       onSend(input, files);
       setInput("");
@@ -284,7 +344,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
 
   return (
     <TooltipProvider>
-      <div className="prompt-container" ref={ref}>
+      <div className={`prompt-container ${isListening ? "listening" : ""}`} ref={ref}>
         {/* Attachment Preview (Simplified) */}
         {files.length > 0 && (
           <div style={{ display: "flex", gap: "8px", marginBottom: "4px" }}>
@@ -300,7 +360,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
         <textarea
           ref={textareaRef}
           className="prompt-textarea"
-          placeholder={showSearch ? "Search the web..." : showThink ? "Think deeply..." : placeholder}
+          placeholder={isListening ? "Listening..." : showSearch ? "Search the web..." : showThink ? "Think deeply..." : placeholder}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -355,19 +415,30 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
           </div>
 
           <div className="prompt-right-actions">
-            <button
-              className="prompt-submit-btn"
-              onClick={handleSubmit}
-              disabled={!hasContent || isLoading}
-            >
-              {isLoading ? (
-                <div style={{ width: "16px", height: "16px", border: "2px solid #e5e7eb", borderTopColor: "#000", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
-              ) : hasContent ? (
-                <ArrowUp size={18} />
-              ) : (
-                <Mic size={18} />
-              )}
-            </button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div style={{ display: "inline-block" }}>
+                  <button
+                    className={`prompt-submit-btn ${isListening ? "prompt-recording-btn" : ""}`}
+                    onClick={hasContent ? handleSubmit : handleVoiceInput}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <div style={{ width: "16px", height: "16px", border: "2px solid #e5e7eb", borderTopColor: "#000", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+                    ) : isListening ? (
+                      <StopCircle size={18} />
+                    ) : hasContent ? (
+                      <ArrowUp size={18} />
+                    ) : (
+                      <Mic size={18} />
+                    )}
+                  </button>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                {isLoading ? "Thinking..." : isListening ? "Stop listening" : hasContent ? "Send message" : "Voice input"}
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </div>

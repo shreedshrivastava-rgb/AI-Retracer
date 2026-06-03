@@ -17,17 +17,17 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: "0",
     role: "ai",
-    text: "Hi! I'm Glide, your AI Retracer assistant. Ask me anything about your traces, telemetry, or integrations.",
+    text: "Hi! I'm Glide Co-Pilot, your Razorpay Glide assistant. I'm here to help you manage your dashboard, track payments, or check your settlements. How can I help you today?",
     time: "just now",
   },
 ];
 
 const AI_RESPONSES: string[] = [
-  "Your last 7-day payment volume is ₹1,88,950. Success rate stands at 94.2% — looking healthy!",
-  "Settlement for ₹16,750 was processed to HDFC Bank (XXXXXXXX4321) at 6:00 AM today.",
-  "You have 2 active payment links. The 'Consulting Fee - May' link has received 2 payments so far.",
-  "To enable T+1 settlements, go to Developer API settings and toggle the fast-settlement option. I can walk you through it.",
-  "No failed high-value transactions in the last 48 hours. Keep it up!",
+  "Your total processing volume is ₹1,70,000, up 14.2% from last week. Everything looks solid!",
+  "A settlement of ₹16,750 was just credited to your HDFC Bank account (XX4321).",
+  "You have ₹2,50,000 in pending settlements, scheduled for payout at 06:00 AM tomorrow.",
+  "The last transaction pay_N8x2k9J5aQ for ₹12,500 was successfully captured 3 minutes ago.",
+  "I can take you to your API settings or help you create a new payment link. Just say the word!",
 ];
 
 interface GlidePanelProps {
@@ -50,7 +50,7 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
 
   const getTime = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  const handleSend = (text: string, files?: File[]) => {
+  const handleSend = async (text: string, files?: File[]) => {
     const trimmed = text.trim();
     if (!trimmed && (!files || files.length === 0)) return;
 
@@ -63,18 +63,78 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
     setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
 
-    // Simulate AI reply
-    setTimeout(() => {
-      const aiText = AI_RESPONSES[Math.floor(Math.random() * AI_RESPONSES.length)];
+    // AI BRAIN INTEGRATION PLACEHOLDER
+    // const API_KEY = "YOUR_API_KEY_HERE";
+    
+    try {
+      // Simulate API delay
+      await new Promise((resolve) => setTimeout(resolve, 1400));
+
+      // Simulate a structured JSON response from the "brain"
+      // In a real implementation, this would come from an LLM call
+      let aiResponseJson;
+      const lowerText = trimmed.toLowerCase();
+      
+      if (lowerText.includes("settlement") || lowerText.includes("payout")) {
+        aiResponseJson = {
+          action: "TALK",
+          route: null,
+          spoken_response: "Your last settlement of ₹16,750 was credited to HDFC Bank (XX4321). You have ₹2,50,000 pending for tomorrow's payout.",
+        };
+      } else if (lowerText.includes("volume") || lowerText.includes("business") || lowerText.includes("status")) {
+        aiResponseJson = {
+          action: "TALK",
+          route: null,
+          spoken_response: "Business is looking great! Your total processing volume is ₹1,70,000, which is a 14.2% increase over last week.",
+        };
+      } else if (lowerText.includes("payment") || lowerText.includes("transaction")) {
+        aiResponseJson = {
+          action: "REDIRECT",
+          route: "/payments",
+          spoken_response: "Sure, let's take a look at your transactions. Redirecting you to the payments ledger now.",
+        };
+      } else if (lowerText.includes("api") || lowerText.includes("webhook") || lowerText.includes("key")) {
+        aiResponseJson = {
+          action: "REDIRECT",
+          route: "/developer-api",
+          spoken_response: "Opening your developer tools. You can manage your API keys and webhooks here.",
+        };
+      } else {
+        aiResponseJson = {
+          action: "TALK",
+          route: null,
+          spoken_response: "I'm Glide Co-Pilot. I can help you with your settlements, track payments, or navigate the dashboard. What can I do for you?",
+        };
+      }
+
+      // 1. Handle Navigation if action is REDIRECT
+      if (aiResponseJson.action === "REDIRECT" && aiResponseJson.route) {
+        console.log(`[Glide Co-Pilot] Redirecting to: ${aiResponseJson.route}`);
+        // Here you would trigger actual frontend routing, e.g.:
+        // router.push(aiResponseJson.route);
+      }
+
+      // 2. Add spoken response to chat
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: "ai",
-        text: aiText,
+        text: aiResponseJson.spoken_response,
         time: getTime(),
       };
       setMessages((prev) => [...prev, aiMsg]);
+      
+    } catch (error) {
+      console.error("Glide Co-Pilot Error:", error);
+      const errorMsg: Message = {
+        id: Date.now().toString(),
+        role: "ai",
+        text: "I'm having a bit of trouble connecting to my brain. Please try again in a moment.",
+        time: getTime(),
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
       setIsTyping(false);
-    }, 1400);
+    }
   };
 
   const handleNewChat = () => {
