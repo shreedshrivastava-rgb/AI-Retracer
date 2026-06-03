@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "react-slice"; // Wait, react-slice is not a package!
-// Let's import from framer-motion instead
+import { motion, AnimatePresence } from "framer-motion";
 import { Copy, Check, Link2, Plus, Smartphone, CreditCard, Send } from "lucide-react";
 import styles from "./DashboardPaymentLinks.module.css";
 import { PaymentLink } from "./DashboardContainer";
