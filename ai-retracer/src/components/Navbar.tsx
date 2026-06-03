@@ -7,8 +7,12 @@ export default function Navbar() {
   return (
     <nav className={`${styles.navbar} glass`}>
       <div className={styles.logo}>
-        <span className={styles.logoDot} />
-        <span className="gradient-text">AI Retracer</span>
+        <img 
+          src="https://cdn.razorpay.com/logo.png" 
+          alt="Razorpay Logo" 
+          className={styles.logoImg} 
+        />
+        <span className="gradient-text">Glide</span>
       </div>
       
       <ul className={styles.navLinks}>

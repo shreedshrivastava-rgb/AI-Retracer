@@ -147,14 +147,12 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
             {/* Header */}
             <div className={styles.panelHeader}>
               <span className={styles.panelTitle}>
-                {/* Razorpay "R" mark */}
-                <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
-                  <rect width="32" height="32" rx="6" fill="#3395FF" />
-                  <path
-                    d="M9 7h9c3.3 0 5.5 2 5.5 5 0 2.2-1.2 3.9-3 4.7l3.5 8.3h-4.2L17 17.2h-4V25H9V7zm4 7h4.5c1.2 0 2-.7 2-1.8S18.7 10.4 17.5 10.4H13V14z"
-                    fill="#fff"
-                  />
-                </svg>
+                {/* Brand logo */}
+                <img 
+                  src="https://cdn.razorpay.com/logo.png" 
+                  alt="Razorpay Logo" 
+                  style={{ width: 24, height: 24, objectFit: "contain" }} 
+                />
                 New chat
               </span>
               <div className={styles.panelHeaderActions}>

@@ -215,7 +215,7 @@ export default function VisualTraceDemo() {
         <span className={styles.tagline}>Interactive Replay</span>
         <h2 className={styles.title}>Visual Code-Path Tracing</h2>
         <p className={styles.subtitle}>
-          Select a production bug simulation below. Click &quot;Simulate Trace Replay&quot; to see how AI-Retracer highlights active code paths and reports errors in real-time.
+          Select a production bug simulation below. Click &quot;Simulate Trace Replay&quot; to see how Glide highlights active code paths and reports errors in real-time.
         </p>
       </div>
 

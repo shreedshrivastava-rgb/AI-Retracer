@@ -55,7 +55,7 @@ export default function DashboardContainer() {
       id: "pay_N8x2k9J5aQ",
       amount: 12500.00,
       status: "captured",
-      email: "shreed.shrivastava@razorpay.com",
+      email: "shreed.shrivastava@glide.com",
       phone: "+91 99999 88888",
       method: "card",
       createdAt: "3 mins ago",

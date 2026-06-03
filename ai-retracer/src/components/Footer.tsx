@@ -10,8 +10,12 @@ export default function Footer() {
         {/* Brand Column */}
         <div className={styles.brandCol}>
           <div className={styles.logo}>
-            <span className={styles.logoDot} />
-            <span className="gradient-text">AI Retracer</span>
+            <img 
+              src="https://cdn.razorpay.com/logo.png" 
+              alt="Razorpay Logo" 
+              className={styles.logoImg} 
+            />
+            <span className="gradient-text">Glide</span>
           </div>
           <p className={styles.tagline}>
             Connecting telemetry telemetry traces to source code line-by-line using artificial intelligence.

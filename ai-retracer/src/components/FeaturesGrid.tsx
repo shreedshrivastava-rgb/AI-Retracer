@@ -56,7 +56,7 @@ export default function FeaturesGrid() {
         <span className={styles.tagline}>Core Platform Specs</span>
         <h2 className={styles.title}>Reconstruct. Isolate. Solve.</h2>
         <p className={styles.subtitle}>
-          AI-Retracer provides complete observability by marrying telemetry data with source code intelligence.
+          Glide provides complete observability by marrying telemetry data with source code intelligence.
         </p>
       </div>
 

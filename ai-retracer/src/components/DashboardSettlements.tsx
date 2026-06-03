@@ -128,7 +128,7 @@ export default function DashboardSettlements({ settlements, liveMode }: Settleme
               <span className={`${styles.timelineDot} ${styles.timelineDotActive}`} />
               <span className={styles.timelineTitle}>1. Customer Pays</span>
               <span className={styles.timelineDesc}>
-                Payment is captured in your Razorpay dashboard and goes to your escrow account.
+                Payment is captured in your Glide dashboard and goes to your escrow account.
               </span>
             </div>
 

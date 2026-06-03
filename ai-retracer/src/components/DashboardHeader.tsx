@@ -78,14 +78,13 @@ export default function DashboardHeader({
           className={`${glideStyles.glideButton} ${glideOpen ? glideStyles.glideButtonActive : ""}`}
           aria-label="Open Glide AI assistant"
         >
-          {/* Razorpay logo mark */}
+          {/* Brand logo mark */}
           <span className={glideStyles.razorpayLogo}>
-            <svg width="18" height="18" viewBox="0 0 255 285" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Dark navy bar */}
-              <path d="M55 0 L93 0 L30 285 L0 285 Z" fill="#072554" />
-              {/* Bright blue arrow + body */}
-              <path d="M93 0 L255 0 L163 100 L207 100 L128 285 L90 285 L163 105 L115 105 Z" fill="#3395FF" />
-            </svg>
+            <img 
+              src="https://cdn.razorpay.com/logo.png" 
+              alt="Logo" 
+              style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+            />
           </span>
           <span className={glideStyles.glideLabel}>Glide</span>
         </motion.button>

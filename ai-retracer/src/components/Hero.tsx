@@ -18,7 +18,7 @@ export default function Hero() {
         </h1>
         
         <p className={styles.description}>
-          AI-Retracer converts telemetry spans, database queries, and unstructured server logs into highly visual, step-by-step code execution replays. Stop guessing, trace exactly what happened.
+          Glide converts telemetry spans, database queries, and unstructured server logs into highly visual, step-by-step code execution replays. Stop guessing, trace exactly what happened.
         </p>
         
         <div className={styles.actions}>

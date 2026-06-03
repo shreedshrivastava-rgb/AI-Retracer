@@ -24,9 +24,13 @@ export default function DashboardSidebar({ activeTab, setActiveTab }: SidebarPro
     <aside className={styles.sidebar}>
       {/* Brand logo */}
       <div className={styles.logoSection}>
-        <div className={styles.logoIcon}>R</div>
+        <img 
+          src="https://cdn.razorpay.com/logo.png" 
+          alt="Razorpay Logo" 
+          className={styles.logoImg} 
+        />
         <span className={styles.logoText}>
-          razorpay <span style={{ fontWeight: 400, color: "var(--color-primary)" }}>x</span>
+          Glide
         </span>
       </div>
 
