@@ -1,0 +1,336 @@
+.overviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Metric Cards Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.metricCard {
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.metricHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.metricTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metricIcon {
+  color: var(--text-muted);
+}
+
+.metricValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.metricSubtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.trendUp {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.trendDown {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+/* Mid section Grid */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 1.5rem;
+}
+
+.chartCard {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.chartTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chartTabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 0.2rem;
+  border-radius: 8px;
+  gap: 0.25rem;
+}
+
+.chartTabButton {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.chartTabButtonActive {
+  background: #ffffff;
+  color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.chartCanvasWrapper {
+  height: 220px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Settlement Panel */
+.settlementCard {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.settlementHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.settlementIconWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(82, 142, 253, 0.1);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settlementBankInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.bankName {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.bankDetails {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.settlementAmount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.settlementStatusGlow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-success);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.timelineStep {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -22px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.timelineDotActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(82, 142, 253, 0.25);
+}
+
+.timelineStepTitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.timelineStepTitleActive {
+  color: var(--color-primary);
+}
+
+.timelineStepDesc {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+}
+
+/* Recent activity section */
+.recentSection {
+  padding: 1.5rem;
+}
+
+.recentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.recentTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.viewAllBtn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.viewAllBtn:hover {
+  opacity: 0.8;
+}
+
+.recentTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recentTh {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.recentTd {
+  padding: 1rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.recentTr:last-child .recentTd {
+  border-bottom: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.725rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badgeCaptured {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+}
+
+.badgeFailed {
+  background: rgba(244, 63, 94, 0.1);
+  color: var(--color-danger);
+}
+
+.badgeRefunded {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning);
+}
+
+@media (max-width: 1024px) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+}
