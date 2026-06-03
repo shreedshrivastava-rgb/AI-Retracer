@@ -2,8 +2,9 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, RotateCcw, X, AtSign, Mic, Activity } from "lucide-react";
+import { Plus, RotateCcw, X } from "lucide-react";
 import styles from "./GlidePanel.module.css";
+import { PromptInputBox } from "@/components/ui/ai-prompt-box";
 
 interface Message {
   id: string;
@@ -16,7 +17,7 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: "0",
     role: "ai",
-    text: "Hi! I'm Glide, your Razorpay AI assistant. Ask me anything about your payments, settlements, or integrations.",
+    text: "Hi! I'm Glide, your AI Retracer assistant. Ask me anything about your traces, telemetry, or integrations.",
     time: "just now",
   },
 ];
@@ -36,10 +37,8 @@ interface GlidePanelProps {
 
 export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
-  const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showTip, setShowTip] = useState(true);
-  const [voiceActive, setVoiceActive] = useState(false);
   const [panelWidth, setPanelWidth] = useState(420);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const resizeRef = useRef<{ startX: number; startWidth: number } | null>(null);
@@ -51,18 +50,17 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
 
   const getTime = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  const handleSend = () => {
-    const trimmed = input.trim();
-    if (!trimmed) return;
+  const handleSend = (text: string, files?: File[]) => {
+    const trimmed = text.trim();
+    if (!trimmed && (!files || files.length === 0)) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
       role: "user",
-      text: trimmed,
+      text: trimmed || (files ? `Sent ${files.length} file(s)` : "Sent a file"),
       time: getTime(),
     };
     setMessages((prev) => [...prev, userMsg]);
-    setInput("");
     setIsTyping(true);
 
     // Simulate AI reply
@@ -79,16 +77,8 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
     }, 1400);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
-
   const handleNewChat = () => {
     setMessages(INITIAL_MESSAGES);
-    setInput("");
     setIsTyping(false);
   };
 
@@ -170,7 +160,7 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
 
             {/* Chat area */}
             <div className={styles.chatArea}>
-              <div className={styles.messagesContainer}>
+              <div className={messages.length > 0 ? styles.messagesContainer : ""}>
                 {messages.map((msg) => (
                   <motion.div
                     key={msg.id}
@@ -252,60 +242,6 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
                 isLoading={isTyping}
                 placeholder="Ask Glide anything..."
               />
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-}
-LTextAreaElement;
-                    t.style.height = "auto";
-                    t.style.height = `${Math.min(t.scrollHeight, 120)}px`;
-                  }}
-                />
-                <div className={styles.inputActions}>
-                  <button className={styles.inputActionBtn} title="Mention">
-                    <AtSign size={15} />
-                  </button>
-                  <button
-                    className={styles.inputActionBtn}
-                    title="Voice"
-                    onClick={() => setVoiceActive((v) => !v)}
-                  >
-                    <Mic size={15} style={{ color: voiceActive ? "var(--color-primary)" : undefined }} />
-                  </button>
-                  {/* Glowing send / voice button */}
-                  <motion.button
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.94 }}
-                    className={`${styles.voiceBtn} ${voiceActive ? styles.voiceBtnActive : ""}`}
-                    onClick={input.trim() ? handleSend : () => setVoiceActive((v) => !v)}
-                    title={input.trim() ? "Send" : "Voice mode"}
-                  >
-                    {input.trim() ? (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13" />
-                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                      </svg>
-                    ) : (
-                      <Activity size={14} />
-                    )}
-                  </motion.button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-}
-             <Activity size={14} />
-                    )}
-                  </motion.button>
-                </div>
-              </div>
             </div>
           </motion.div>
         </>
