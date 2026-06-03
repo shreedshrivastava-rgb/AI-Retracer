@@ -247,17 +247,19 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
 
             {/* Input area */}
             <div className={styles.inputArea}>
-              <div className={styles.inputRow}>
-                <textarea
-                  className={styles.chatInput}
-                  placeholder="Ask anything..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  rows={1}
-                  style={{ height: "auto" }}
-                  onInput={(e) => {
-                    const t = e.target as HTMLTextAreaElement;
+              <PromptInputBox 
+                onSend={handleSend} 
+                isLoading={isTyping}
+                placeholder="Ask Glide anything..."
+              />
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+LTextAreaElement;
                     t.style.height = "auto";
                     t.style.height = `${Math.min(t.scrollHeight, 120)}px`;
                   }}
@@ -288,6 +290,18 @@ export default function GlidePanel({ isOpen, onClose }: GlidePanelProps) {
                       </svg>
                     ) : (
                       <Activity size={14} />
+                    )}
+                  </motion.button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+             <Activity size={14} />
                     )}
                   </motion.button>
                 </div>
